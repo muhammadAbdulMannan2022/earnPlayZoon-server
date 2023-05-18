@@ -57,10 +57,23 @@ async function run() {
       const resault = await toysCollection.findOne(query);
       res.send(resault);
     });
+    app.get("/mytoys", async (req, res) => {
+      const email = req.query.email;
+      const query = { seller_email: email };
+      const resault = await toysCollection.find(query).toArray();
+      res.send(resault);
+    });
     app.post("/addtoy", async (req, res) => {
       const data = req.body;
       const resault = await toysCollection.insertOne(data);
 
+      res.send(resault);
+    });
+    app.delete("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const resault = await toysCollection.deleteOne(query);
+      console.log(resault);
       res.send(resault);
     });
     // Send a ping to confirm a successful connection

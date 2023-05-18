@@ -46,6 +46,17 @@ async function run() {
       const resault = await cursor.toArray();
       res.send(resault);
     });
+    app.get("/alltoys", async (req, res) => {
+      const cursor = toysCollection.find().limit(20);
+      const resault = await cursor.toArray();
+      res.send(resault);
+    });
+    app.get("/toys/details/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const resault = await toysCollection.findOne(query);
+      res.send(resault);
+    });
     app.post("/addtoy", async (req, res) => {
       const data = req.body;
       const resault = await toysCollection.insertOne(data);

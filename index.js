@@ -63,6 +63,23 @@ async function run() {
       const resault = await toysCollection.find(query).toArray();
       res.send(resault);
     });
+    app.get("/search/:name", async (req, res) => {
+      // console.log(req.params);
+      const name = req.params.name;
+      const pattern = new RegExp(`(${name})`);
+      const options = {
+        projection: { _id: 1, toy_imageUrl: 1, toyname: 1, price: 1 },
+      };
+      const query = { toyname: { $regex: pattern, $options: "i" } };
+      const resault = await toysCollection.find(query, options).toArray();
+      // console.log(resault.length);
+      if (resault.length == 0) {
+        const errorData = [{ data: "Not Found" }];
+        res.send(JSON.stringify(errorData));
+      } else {
+        res.send(resault);
+      }
+    });
     app.post("/addtoy", async (req, res) => {
       const data = req.body;
       const resault = await toysCollection.insertOne(data);

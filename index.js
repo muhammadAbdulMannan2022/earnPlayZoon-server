@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
     // make collections
     const gallaryCollection = client.db("toysHunter").collection("gallary");
     const toysCollection = client.db("toysHunter").collection("toys");
@@ -44,6 +44,7 @@ async function run() {
       };
       const cursor = toysCollection.find(query);
       const resault = await cursor.toArray();
+      console.log(category);
       res.send(resault);
     });
     app.get("/alltoys", async (req, res) => {

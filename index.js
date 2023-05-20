@@ -47,6 +47,7 @@ async function run() {
       res.send(resault);
     });
     app.get("/alltoys", async (req, res) => {
+      // .limit(20) for add a limitation
       const cursor = toysCollection.find().limit(20);
       const resault = await cursor.toArray();
       res.send(resault);
@@ -66,7 +67,9 @@ async function run() {
     app.get("/search/:name", async (req, res) => {
       // console.log(req.params);
       const name = req.params.name;
+      // pass the regex for search to match similar all items
       const pattern = new RegExp(`(${name})`);
+      // Option to skip unnecessary data
       const options = {
         projection: { _id: 1, toy_imageUrl: 1, toyname: 1, price: 1 },
       };

@@ -60,8 +60,17 @@ async function run() {
     });
     app.get("/mytoys", async (req, res) => {
       const email = req.query.email;
+      let sort;
+      if (req.query.sort === "ascending") {
+        sort = 1;
+      } else {
+        sort = -1;
+      }
       const query = { seller_email: email };
-      const resault = await toysCollection.find(query).toArray();
+      const resault = await toysCollection
+        .find(query)
+        .sort({ price: sort })
+        .toArray();
       res.send(resault);
     });
     app.get("/search/:name", async (req, res) => {
